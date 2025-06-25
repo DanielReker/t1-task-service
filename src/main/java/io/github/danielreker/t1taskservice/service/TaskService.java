@@ -1,5 +1,7 @@
 package io.github.danielreker.t1taskservice.service;
 
+import io.github.danielreker.t1taskservice.exception.ConcurrentTaskModificationConflictException;
+import io.github.danielreker.t1taskservice.exception.InvalidTaskStateException;
 import io.github.danielreker.t1taskservice.exception.TaskNotFoundException;
 import io.github.danielreker.t1taskservice.mapper.TaskMapper;
 import io.github.danielreker.t1taskservice.model.Task;
@@ -72,7 +74,7 @@ public class TaskService {
                         .formatted(id)));
 
         if (currentTask.taskStatus() == TaskStatus.DONE) {
-            throw new IllegalStateException("Can't cancel already DONE task (ID: %s)"
+            throw new InvalidTaskStateException("Can't cancel already DONE task (ID: %s)"
                     .formatted(currentTask.id()));
         }
 
@@ -86,7 +88,8 @@ public class TaskService {
                 .build();
 
         if (!repository.update(currentTask, canceledTask)) {
-            throw new IllegalStateException("Concurrent modification of task #%s failed".formatted(currentTask.id()));
+            throw new ConcurrentTaskModificationConflictException("Concurrent modification of task #%s failed"
+                    .formatted(currentTask.id()));
         }
     }
 

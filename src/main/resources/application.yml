@@ -1,3 +1,7 @@
 spring:
   application:
     name: t1-task-service
+
+server:
+  error:
+    include-stacktrace: never

@@ -4,6 +4,7 @@ import io.github.danielreker.t1taskservice.mapper.TaskMapper;
 import io.github.danielreker.t1taskservice.model.dto.CreateTaskRequest;
 import io.github.danielreker.t1taskservice.model.dto.TaskDto;
 import io.github.danielreker.t1taskservice.service.TaskService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<TaskDto> create(@RequestBody CreateTaskRequest createTaskRequest) {
+    public ResponseEntity<TaskDto> create(@Valid @RequestBody CreateTaskRequest createTaskRequest) {
         return ResponseEntity.ok(mapper.toDto(service.createTask(createTaskRequest)));
     }
 
